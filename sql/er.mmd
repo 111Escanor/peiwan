@@ -1,0 +1,55 @@
+erDiagram
+    user ||--o{ master : "陪玩师详情"
+    user ||--o{ orders : "玩家下单"
+    user ||--o{ orders : "陪玩师接单"
+    orders ||--o{ review : "订单评价"
+    orders ||--o{ payment : "订单支付"
+
+    user {
+        bigint id PK
+        varchar username "用户名"
+        varchar password "密码"
+        varchar real_name "真实姓名"
+        varchar phone "手机号"
+        enum role "角色"
+        tinyint status "状态"
+        datetime created_at "创建时间"
+    }
+
+    master {
+        bigint user_id PK
+        varchar game_level "段位"
+        decimal price_per_hour "每小时价格"
+        varchar tags "标签"
+        int total_orders "接单数"
+        decimal rating "评分"
+        enum auth_status "审核状态"
+    }
+
+    orders {
+        bigint id PK
+        bigint player_id FK
+        bigint master_id FK
+        decimal amount "金额"
+        enum status "订单状态"
+        datetime create_time "创建时间"
+        datetime pay_time "支付时间"
+        datetime complete_time "完成时间"
+    }
+
+    review {
+        bigint id PK
+        bigint order_id FK
+        int rating "评分"
+        text comment "评论"
+        datetime create_time "创建时间"
+    }
+
+    payment {
+        bigint id PK
+        bigint order_id FK
+        decimal amount "金额"
+        enum status "状态"
+        varchar transaction_id "交易流水号"
+        datetime pay_time "支付时间"
+    }
